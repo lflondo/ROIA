@@ -1,0 +1,248 @@
+{% extends './base.html' %}
+
+{% block title %}Rutas{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutas.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='img/logoRO.jpg') }}" alt="Logo ORIA">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}">
+                        <i class="fas fa-home me-1"></i>Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rutasmasivas') }}">
+                        <i class="fas fa-route me-1"></i>Rutas Masivas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" id="verRutaOptimizada">
+                        <i class="fas fa-route me-1"></i>Ver Ruta Optimizada
+                    </a>
+                </li>
+            </ul>
+            <!-- Nombre del usuario autenticado -->
+            <span class="navbar-text welcome-text">
+                Bienvenido, {{ session['username'] }}
+            </span>
+
+            <!-- Botón para cerrar sesión -->
+            <form class="d-flex" action="{{ url_for('logout') }}" method="POST">
+                <button class="btn btn-outline-light" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<br><br>
+
+<!-- Mostrar mensajes flash -->
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+<!-- Contenido Principal -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-header" id="subregister">
+                    <h3>Registro de pedidos</h3>
+                </div>
+                <br><br>
+                <!-- Formulario para registrar una nueva ruta -->
+                <form action="{{ url_for('rutas') }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.pedido(class="form-control") }}
+                        {{ form.pedido.label(class="form-label") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.cliente(class="form-control") }}
+                        {{ form.cliente.label(class="form-label") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.direccion(class="form-control") }}
+                        {{ form.direccion.label(class="form-label") }}
+                    </div>
+                    <div class="mb-3">
+                        {{ form.telefono(class="form-control") }}
+                        {{ form.telefono.label(class="form-label") }}
+                    </div>
+                    <div class="mb-3 position-relative">
+                        {{ form.barrio(class="form-control", id="barrioInput", autocomplete="off") }}
+                        {{ form.barrio.label(class="form-label") }}
+                        <div id="sugerenciasBarrios" class="list-group position-absolute w-100" style="z-index: 1000;"></div>
+                    </div>
+                    <div class="mb-3">
+                        {{ form.ciudad(class="form-control") }}
+                        {{ form.ciudad.label(class="form-label") }}                        
+                    </div>
+                    <div class="mb-3">
+                        {{ form.departamento(class="form-control") }}
+                        {{ form.departamento.label(class="form-label") }}                        
+                    </div>
+                    <div class="mb-3">
+                        {{ form.pais(class="form-control") }}
+                        {{ form.pais.label(class="form-label") }}                        
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Numero de pedido</th>
+                        <th scope="col">Nombre cliente</th>
+                        <th scope="col">Direccion</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Barrio</th>
+                        <th scope="col">Ciudad</th>
+                        <th scope="col">Departamento</th>
+                        <th scope="col">País</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.numero_pedido }}</td>
+                        <td>{{ pedido.nombre_cliente }}</td>
+                        <td>{{ pedido.direccion }}</td>
+                        <td>{{ pedido.telefono }}</td>
+                        <td>{{ pedido.barrio }}</td>
+                        <td>{{ pedido.ciudad }}</td>
+                        <td>{{ pedido.departamento }}</td>
+                        <td>{{ pedido.pais }}</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <!-- Botón para Editar -->
+                                <a href="{{ url_for('editar_ruta', numero_pedido = pedido.numero_pedido) }}" class="btn btn-sm btn-warning mb-2">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </a>
+                                <!-- Botón para Eliminar -->
+                                <form action="{{ url_for('eliminar_ruta', numero_pedido=pedido.numero_pedido) }}" method="POST" style="display:inline;">
+                                    {{ form.csrf_token }}
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro de que deseas eliminar el pedido {{ pedido.numero_pedido }}?');">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>    
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>    
+            </table>
+
+
+           <!-- Botón para optimizar ruta -->
+                    <div class="text-center mt-4">
+                        <button id="optimizeRouteBtn" 
+                                class="btn btn-primary btn-lg"
+                                {% if not pedidos %}disabled{% endif %}>
+                            <i class="fas fa-route me-2"></i>
+                            Optimizar Ruta
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ingresar la ubicación de inicio -->
+<div class="modal fade" id="startLocationModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="startLocationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="startLocationModalLabel">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    Ingrese su Ubicación de Inicio
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="startLocationInput" class="form-label">Dirección de inicio:</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="startLocationInput" 
+                           placeholder="Calle 123 #45-67, Medellín, Colombia"
+                           required>
+                    <div class="form-text text-muted">
+                        Formato requerido: Dirección con número, Ciudad, País (separados por comas)
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmStartLocationBtn">
+                    <i class="fas fa-check me-2"></i>
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Nuevo modal para ingresar ID de ruta -->
+<div class="modal fade" id="rutaIdModal" tabindex="-1" aria-labelledby="rutaIdModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="rutaIdModalLabel">
+                    <i class="fas fa-search me-2"></i>
+                    Buscar Ruta Optimizada
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="rutaIdInput" class="form-label">ID de Ruta Optimizada:</label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="rutaIdInput" 
+                           placeholder="Ingrese el ID de la ruta"
+                           required>
+                    <div class="invalid-feedback">
+                        Por favor ingrese un ID válido.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="buscarRutaBtn">
+                    <i class="fas fa-search me-2"></i>
+                    Buscar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<script defer src="{{ url_for('static', filename='js/source/rutas.js') }}"></script>
+{% endblock %}
+

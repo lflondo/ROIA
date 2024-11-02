@@ -1,0 +1,66 @@
+{% extends './base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="login-container">
+    <!-- Mostrar mensajes flash -->
+    <div class="flash-message">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Logo y formulario de login -->
+    <img class="mb-4" src="{{ url_for('static', filename='img/logoRO.jpg') }}" alt="Logo" width="150" height="150">
+    <h1 class="h3 mb-3 fw-normal">Por favor ingresa</h1>
+
+    <form class="form-signin" method="POST" action="{{ url_for('login') }}">
+        {{ form.hidden_tag() }}
+
+        <div class="form-floating">
+            {{ form.username(class="form-control", id="username", placeholder=" ", autocomplete="given-name") }}
+            {{ form.username.label(for="username") }}
+            {% if form.username.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-floating my-2 password-wrapper">
+            {{ form.password(class="form-control", id="password", placeholder=" ", autocomplete="off") }}
+            {{ form.password.label(for="password") }}
+            <button type="button" class="btn btn-sm toggle-password" id="togglePassword">
+                <i class="fa-solid fa-eye"></i>
+            </button>
+            {% if form.password.errors %}
+                <div class="invalid-feedback d-block">
+                    {% for error in form.password.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">{{ form.submit.label }}</button>
+    </form>
+</div>
+{% endblock %}
+{% block customJS %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<script defer src="{{ url_for('static', filename='js/auth/login.js') }}"></script>
+{% endblock %}

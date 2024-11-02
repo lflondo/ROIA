@@ -1,0 +1,145 @@
+{% extends './base.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+
+{% block body %}
+<!-- Navbar similar a la página de inicio -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='img/logoRO.jpg') }}" alt="Logo ORIA">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}">
+                        <i class="fas fa-home me-1"></i>Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('register') }}">
+                        <i class="fas fa-user-plus me-1"></i>Registro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{{ url_for('rutas') }}">
+                        <i class="fas fa-route me-1"></i>Rutas</a>
+                </li>
+                <li class="nav-item"></li>
+                    <a class="nav-link" href="{{ url_for('rutasmasivas') }}">
+                        <i class="fas fa-route me-1"></i>Rutas Masivas</a>
+                </li>
+            </ul>
+            <!-- Nombre del usuario autenticado -->
+            <span class="navbar-text welcome-text">
+                Bienvenido, {{ session['username'] }}
+            </span>
+
+            <!-- Botón para cerrar sesión -->
+            <form class="d-flex" action="{{ url_for('logout') }}" method="POST">
+                <button class="btn btn-outline-light" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- Contenido Principal -->
+<div class="container-fluid main-content-container">
+    <div class="main-content">
+        <h1>Registro de Usuario</h1>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Formulario de registro -->
+        <form method="POST" action="{{ url_for('register') }}">
+            {{ form.hidden_tag() }}
+
+            <div class="mb-3">
+                {{ form.username(class="form-control", placeholder="", autocomplete="given-name") }}
+                {{ form.username.label(class="form-label") }}
+                {% if form.username.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.username.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3 position-relative">
+                {{ form.password(class="form-control", placeholder="", autocomplete="off", id="password") }}
+                {{ form.password.label(class="form-label") }}
+                <button type="button" class="btn btn-sm toggle-password" id="togglePassword">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                {% if form.password.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mb-3 position-relative">
+                {{ form.confirm_password(class="form-control", placeholder="", autocomplete="off", id="confirm_password") }}
+                {{ form.confirm_password.label(class="form-label") }}
+                <button type="button" class="btn btn-sm toggle-password" id="toggleConfirmPassword">
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+                {% if form.confirm_password.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.confirm_password.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="mb-3">
+                {{ form.fullname(class="form-control", placeholder="", autocomplete="family-name") }}
+                {{ form.fullname.label(class="form-label") }}
+                {% if form.fullname.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.fullname.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.rol(class="form-select") }}
+                {{ form.rol.label(class="form-label") }}
+                {% if form.rol.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.rol.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block customJS %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<script defer src="{{ url_for('static', filename='js/auth/register.js') }}"></script>
+{% endblock %}
+
+
+
+
+

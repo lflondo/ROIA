@@ -1,0 +1,104 @@
+ /* Estilos del contenedor */
+ .content-container {
+    padding: 40px;
+}
+
+/* Personalización del navbar */
+.navbar-custom {
+    background-color: #366a9f;
+    color: white;
+}
+
+/* Estilos del logo */
+.navbar-brand img {
+    width: 50px;
+    height: auto;
+}
+
+/* Estilos del mensaje de bienvenida */
+.navbar .welcome-text {
+    margin-right: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+
+.main-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
+    min-height: calc(100vh - 56px); /* Ajusta según la altura del navbar */
+}
+
+.main-content {
+    background-color: white; /* Color de la franja blanca */
+    padding: 20px; /* Espaciado interior */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    border-color: #43719f;
+    text-align: center; /* Centra el texto */
+    max-width: 600px; /* Ancho máximo de la franja */
+    width: 100%; /* Ancho completo hasta el máximo */
+    margin-top: 30px;
+}
+.password-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+/* Alineación y espaciado entre botones */
+.btn-group .btn {
+    margin-right: 5px;
+}
+
+.btn-group form {
+    display: inline-flex;
+    align-items: center;
+}
+.modal-backdrop {
+    opacity: 0.5;
+}
+
+.modal-content {
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
+}
+
+#startLocationInput {
+    margin-top: 10px;
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+}
+
+.spinner-border {
+    margin-right: 5px;
+}
+
+/* Estilos adicionales para mejorar la apariencia */
+.table th {
+    background-color: #f8f9fa;
+}
+
+.btn-group {
+    gap: 5px;
+}
+
+#optimizeRouteBtn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}

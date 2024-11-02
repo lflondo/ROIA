@@ -1,0 +1,60 @@
+ /* Estilos del contenedor */
+ .content-container {
+    padding: 40px;
+}
+
+/* Personalización del navbar */
+.navbar-custom {
+    background-color: #366a9f;
+    color: white;
+}
+
+/* Estilos del logo */
+.navbar-brand img {
+    width: 50px;
+    height: auto;
+}
+
+/* Estilos del mensaje de bienvenida */
+.navbar .welcome-text {
+    margin-right: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+
+.main-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
+    min-height: calc(100vh - 56px); /* Ajusta según la altura del navbar */
+}
+
+.main-content {
+    background-color: white; /* Color de la franja blanca */
+    padding: 20px; /* Espaciado interior */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    border-color: #43719f;
+    text-align: center; /* Centra el texto */
+    max-width: 600px; /* Ancho máximo de la franja */
+    width: 100%; /* Ancho completo hasta el máximo */
+    margin-top: 30px;
+}
+#map {
+    height: 500px;
+    width: 100%;
+}
+.collapse {
+    transition: all 0.3s ease;
+}
+
+.card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-responsive {
+    max-height: 500px;
+    overflow-y: auto;
+}

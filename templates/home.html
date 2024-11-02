@@ -1,0 +1,74 @@
+{%extends './base.html'%}
+
+{%block title%}Home{%endblock%}
+
+{% block customCSS %}
+<link  rel="stylesheet" href="{{url_for('static', filename='css/home.css')}}">
+{% endblock %}
+
+
+
+{%block body%}
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='img/logoRO.jpg') }}" alt="Logo ORIA">
+        </a>
+
+        <!-- Botón colapsable para móvil -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Opciones del menú -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">
+                        <i class="fas fa-home me-1"></i>Inicio</a>
+                </li>
+
+                {% if session['rol'] == 'administrador' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('register') }}">
+                        <i class="fas fa-user-plus me-1"></i>Registro</a>
+                </li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rutas') }}">
+                        <i class="fas fa-route me-1"></i>Rutas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rutasmasivas') }}">
+                        <i class="fas fa-route me-1"></i>Rutas Masivas</a>
+                </li>
+            </ul>
+
+            <!-- Nombre del usuario autenticado -->
+            <span class="navbar-text welcome-text">
+                Bienvenido, {{ session['username'] }}
+            </span>
+
+            <!-- Botón para cerrar sesión -->
+            <form class="d-flex" action="{{ url_for('logout') }}" method="POST">
+                <button class="btn btn-outline-light" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Contenido Principal -->
+<div class="container-fluid main-content-container">
+    <div class="main-content">
+        <h1>Bienvenido a ORIA</h1>
+        <p>La plataforma para optimizar las rutas.</p>
+    </div>
+</div>
+{%endblock%}
+
+{% block customJS %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+{% endblock %}

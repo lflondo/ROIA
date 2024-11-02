@@ -1,0 +1,106 @@
+{% extends './base.html' %}
+
+{% block title %}Editar Ruta{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rutas.css') }}">
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='img/logoRO.jpg') }}" alt="Logo ORIA">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rutasmasivas') }}">Rutas Masivas</a>
+                </li>
+            </ul>
+            <!-- Nombre del usuario autenticado -->
+            <span class="navbar-text welcome-text">
+                Bienvenido, {{ session['username'] }}
+            </span>
+
+            <!-- Botón para cerrar sesión -->
+            <form class="d-flex" action="{{ url_for('logout') }}" method="POST">
+                <button class="btn btn-outline-light" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+<!-- Mostrar mensajes flash -->
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div id="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</div>
+
+<!-- Formulario para editar la ruta -->
+<div class="container">
+    <h3>Editar Pedido: {{ form.nuevo_numero_pedido.data }}</h3>
+    <form method="POST" action="{{ url_for('editar_ruta', numero_pedido=form.nuevo_numero_pedido.data) }}">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.nuevo_numero_pedido.label(class="form-label") }}
+            {{ form.nuevo_numero_pedido(class="form-control", placeholder="Número de pedido") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.cliente.label(class="form-label") }}
+            {{ form.cliente(class="form-control", placeholder="Nombre del cliente") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.direccion.label(class="form-label") }}
+            {{ form.direccion(class="form-control", placeholder="Dirección") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.telefono.label(class="form-label") }}
+            {{ form.telefono(class="form-control", placeholder="Teléfono") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.barrio.label(class="form-label") }}
+            {{ form.barrio(class="form-control", placeholder="Barrio") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.ciudad.label(class="form-label") }}
+            {{ form.ciudad(class="form-control", placeholder="Ciudad") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.departamento.label(class="form-label") }}
+            {{ form.departamento(class="form-control", placeholder="Departamento") }}
+        </div>
+
+        <div class="mb-3">
+            {{ form.pais.label(class="form-label") }}
+            {{ form.pais(class="form-control", placeholder="País") }}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    </form>
+</div>
+{% endblock %}
+{% block customJS %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+<script defer src="{{ url_for('static', filename='js/source/editar_ruta.js') }}"></script>
+{% endblock %}

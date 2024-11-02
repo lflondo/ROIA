@@ -1,0 +1,70 @@
+{% extends './base.html' %}
+
+{% block title %}Rutas Masivas{% endblock %}
+
+{% block customCSS %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+<!-- Navbar similar a la página de inicio -->
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="{{ url_for('static', filename='img/logoRO.jpg') }}" alt="Logo ORIA">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('home') }}">
+                        <i class="fas fa-home me-1"></i>Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('rutas') }}">
+                        <i class="fas fa-route me-1"></i>Rutas</a>
+                </li>
+            </ul>
+            <!-- Nombre del usuario autenticado -->
+            <span class="navbar-text welcome-text">
+                Bienvenido, {{ session['username'] }}
+            </span>
+
+            <!-- Botón para cerrar sesión -->
+            <form class="d-flex" action="{{ url_for('logout') }}" method="POST">
+                <button class="btn btn-outline-light" type="submit">Cerrar sesión</button>
+            </form>
+        </div>
+    </div>
+</nav>
+<!-- Mostrar mensajes flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <div id="flash-messages">
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+{% endwith %}
+
+<div class="container mt-4">
+    <h3>Cargar archivo CSV de rutas masivas</h3>
+    <form action="{{ url_for('procesar_rutas_masivas') }}" method="POST" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}  <!-- Esto agrega el token CSRF -->
+        <div class="mb-3">
+            <label for="file" class="form-label">Archivo CSV:</label>
+            <input type="file" class="form-control" id="file" name="file" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Procesar</button>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block customJS %}
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script> 
+<script defer src="{{ url_for('static', filename='js/source/rutasmasivas.js') }}"></script> 
+{% endblock %}

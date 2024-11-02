@@ -1,0 +1,71 @@
+ /* Estilos del contenedor */
+ .content-container {
+    padding: 40px;
+}
+
+/* Personalización del navbar */
+.navbar-custom {
+    background-color: #366a9f;
+    color: white;
+}
+
+/* Estilos del logo */
+.navbar-brand img {
+    width: 50px;
+    height: auto;
+}
+
+/* Estilos del mensaje de bienvenida */
+.navbar .welcome-text {
+    margin-right: 20px;
+    color: white;
+    font-weight: bold;
+}
+
+
+.main-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Hace que el contenedor ocupe toda la altura de la ventana */
+    min-height: calc(100vh - 56px); /* Ajusta según la altura del navbar */
+}
+
+.main-content {
+    background-color: white; /* Color de la franja blanca */
+    padding: 20px; /* Espaciado interior */
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+    border-color: #43719f;
+    text-align: center; /* Centra el texto */
+    max-width: 600px; /* Ancho máximo de la franja */
+    width: 100%; /* Ancho completo hasta el máximo */
+    margin-top: 30px;
+}
+/* Estilo para el wrapper del campo de contraseña */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.password-wrapper .toggle-password i {
+    color: #6c757d; /* Color del icono del ojo */
+}
+
+.password-wrapper .toggle-password i:hover {
+    color: #000; /* Cambiar color al pasar el ratón */
+}
+
+/* Asegúrate de que el campo de contraseña tenga padding extra a la derecha para que no choque con el icono */
+.password-wrapper input {
+    padding-right: 30px; /* Espacio suficiente para el icono del ojo */
+}
+
+
