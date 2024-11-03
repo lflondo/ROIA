@@ -15,11 +15,7 @@ ENV FLASK_ENV=production
 # Copia los archivos de requerimientos al contenedor
 RUN pip install --no-cache-dir --upgrade pip
 
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-
 # Instala las dependencias del proyecto
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:appy
+CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
